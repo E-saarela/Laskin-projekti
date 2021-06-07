@@ -1,10 +1,14 @@
 package LaskinFx;
 
+import com.sun.javafx.css.StyleCacheEntry.Key;
+
 import fi.jyu.mit.ohj2.Mjonot;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 public class laskinController {
 
@@ -91,7 +95,7 @@ public class laskinController {
 
     @FXML
     void handlePlus(ActionEvent event) {
-
+    	lisaa();
     }
 
     @FXML
@@ -116,15 +120,20 @@ public class laskinController {
 
   //  private Button[] numerot = {num0, num1, num2, num3, num4, num5, num6,
     	//	num7, num8, num9};
-    
-    
-    
-    
+ 
+   /**
+    public String venaa() {
+    	boolean valmista = false;
+    	while(valmista=false) {
+    		String input = naytto.getText();
+    		if
+    	}
+    	
+       return null;
+    }
+  */  
     
     private void kasitteleNumerot(ActionEvent painettu) {
-
-    	
-    
     	String s = painettu.toString();
     	StringBuffer sb = new StringBuffer();
     	sb.append(s);
@@ -136,12 +145,22 @@ public class laskinController {
         lisaaNayttoon(luku);
     }
 
-	private void lisaaNayttoon(int lisattava) {
+	
+    public void lisaaNayttoon(int lisattava) {
 		Integer nolla = 0;
-		if(naytto.getText() == nolla.toString())naytto.clear();
+		if(naytto.textProperty().getValueSafe() == nolla.toString())naytto.clear();
 		Integer palautus = lisattava; 
 		naytto.appendText(palautus.toString());
 	}
+    
+    
+    public void lisaa() {
+    String tuloste =  naytto.getText();
+    naytto.clear();
+ //   String input = venaa();;
+     int x = 0;
+   }
+    
 
 }
 
