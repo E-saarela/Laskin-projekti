@@ -1,5 +1,8 @@
 package LaskinFx;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.sun.javafx.css.StyleCacheEntry.Key;
 
 import fi.jyu.mit.ohj2.Mjonot;
@@ -118,8 +121,8 @@ public class laskinController {
 //////////////////////////////////////////////////////////////////
     
 
-  //  private Button[] numerot = {num0, num1, num2, num3, num4, num5, num6,
-    	//	num7, num8, num9};
+      private ArrayList <String> sisalto = new ArrayList<String>();
+      boolean laskutoimitus = false;
  
    /**
     public String venaa() {
@@ -135,6 +138,7 @@ public class laskinController {
     
     private void kasitteleNumerot(ActionEvent painettu) {
     	String s = painettu.toString();
+    	sisalto.add(s);
     	StringBuffer sb = new StringBuffer();
     	sb.append(s);
     	char c =',';
@@ -155,11 +159,29 @@ public class laskinController {
     
     
     public void lisaa() {
-    String tuloste =  naytto.getText();
-    naytto.clear();
- //   String input = venaa();;
-     int x = 0;
+    if(laskutoimitus == true)return;
+    laskutoimitus = true;
+    String tuloste =  haeSisalto();
+    naytto.appendText("+");
+                                                    /// täytyy tehä action listeneri
+    int x = 0;
    }
+
+	private String haeSisalto() {
+		StringBuffer sis = new StringBuffer();
+		char c =',';
+		for(int i = 0; i<sisalto.size();i++) {
+			StringBuffer vali = new StringBuffer();
+			vali.append(sisalto.get(i));
+			String ss = Mjonot.erota(vali, c);
+			char cc = ss.charAt(ss.length()-1);
+	    	String numero  = Character.toString(cc);
+			sis.append(numero);			
+		}
+		String palautus = sis.toString();
+		return palautus;
+
+	}
     
 
 }
