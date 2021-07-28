@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import fi.jyu.mit.ohj2.Mjonot;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 
 
@@ -14,47 +13,6 @@ public class laskinController {
 
     @FXML
     private TextArea naytto;
-    @FXML
-    private Button clear;
-    @FXML
-    private Button x2;
-    @FXML
-    private Button delete;
-    @FXML
-    private Button jaa;
-    @FXML
-    private Button num7;
-    @FXML
-    private Button num8;
-    @FXML
-    private Button num9;
-    @FXML
-    private Button kerro;
-    @FXML
-    private Button num4;
-    @FXML
-    private Button num5;
-    @FXML
-    private Button num6;
-    @FXML
-    private Button vahenna;
-    @FXML
-    private Button num1;
-    @FXML
-    private Button num2;
-    @FXML
-    private Button num3;
-    @FXML
-    private Button lisaa;
-    @FXML
-    private Button nega;
-    @FXML
-    private Button num0;
-    @FXML
-    private Button piste;
-    @FXML
-    private Button equals;
-
     
     
     @FXML
@@ -69,12 +27,12 @@ public class laskinController {
 
     @FXML
     void handleJaa(ActionEvent event) {
-
+    	jaa();
     }
 
     @FXML
     void handleKerro(ActionEvent event) {
-
+    	kerro();
     }
 
     @FXML
@@ -100,7 +58,7 @@ public class laskinController {
 
     @FXML
     void handlePoista(ActionEvent event) {
-
+    	poista();
     }
 
     @FXML
@@ -122,10 +80,12 @@ public class laskinController {
     private ArrayList <String> sisalto2 = new ArrayList<String>();
     private boolean laskutoimitus = false;
     private int index;
+    int poistetut = 0;
 
  
   
     private void kasitteleNumerot(ActionEvent painettu) {
+    int poistetut = 0;
   	String s = painettu.toString();
   	StringBuffer sb = new StringBuffer();
   	sb.append(s);
@@ -235,8 +195,94 @@ public class laskinController {
   	  	sisalto1.add("-");
   	  	index = sisalto1.size()-1;
   	  	}
-
-    
+  	
+  	
+  	public void kerro() {
+  	  	if(laskutoimitus == true) {
+  	  		String a = new String();
+  	  	  	StringBuffer sb = new StringBuffer();
+  	  	  	String b = new String();
+  		  	StringBuffer sb2 = new StringBuffer();
+  	  		for(int i = 0; i< sisalto1.size()-1;i++) {
+  	  			sb.append(sisalto1.get(i));
+  	  		}
+  	  		for(int i = 0; i< sisalto2.size();i++) {
+  	  			sb2.append(sisalto2.get(i));
+  	  		}
+  	  		a = sb.toString();
+  	  		b = sb2.toString();
+  	  		int n1 = Integer.parseInt(a);
+  	  		int n2 = Integer.parseInt(b);
+  	  		int tulos = n1*n2;
+  	  		naytto.clear();
+  	  		lisaaNayttoon (tulos);
+  	  		laskutoimitus = false;
+  	  		sisalto1.clear();
+  	  		sisalto2.clear();
+  	  		String[] uusi = String.valueOf(tulos).split("");
+  	  		for(int i = 0; i < uusi.length;i++) {
+  	  			sisalto1.add(uusi[i]);
+  	  		}
+  	  		return;
+  	  	}
+  	  	laskutoimitus = true;
+  	  	naytto.appendText("x");
+  	  	sisalto1.add("x");
+  	  	index = sisalto1.size()-1;
+  	  	}
+  	
+  	
+  	public void jaa() {
+  	  	if(laskutoimitus == true) {
+  	  		String a = new String();
+  	  	  	StringBuffer sb = new StringBuffer();
+  	  	  	String b = new String();
+  		  	StringBuffer sb2 = new StringBuffer();
+  	  		for(int i = 0; i< sisalto1.size()-1;i++) {
+  	  			sb.append(sisalto1.get(i));
+  	  		}
+  	  		for(int i = 0; i< sisalto2.size();i++) {
+  	  			sb2.append(sisalto2.get(i));
+  	  		}
+  	  		a = sb.toString();
+  	  		b = sb2.toString();
+  	  		int n1 = Integer.parseInt(a);
+  	  		int n2 = Integer.parseInt(b);
+  	  		if(n2 != 0) {
+  	  		int tulos = n1/n2;
+  	  		naytto.clear();
+  	  		lisaaNayttoon (tulos);
+  	  		laskutoimitus = false;
+  	  		sisalto1.clear();
+  	  		sisalto2.clear();
+  	  		String[] uusi = String.valueOf(tulos).split("");
+  	  		for(int i = 0; i < uusi.length;i++) {
+  	  			sisalto1.add(uusi[i]);
+  	  		}
+  	  		}
+  	  		return;
+  	  	}
+  	  	laskutoimitus = true;
+  	  	naytto.appendText("/");
+  	  	sisalto1.add("/");
+  	  	index = sisalto1.size()-1;
+  	}
+  	
+  	
+  	public void poista(){
+  		int maara = sisalto2.size();
+  		StringBuffer yhdista = new StringBuffer();
+  		for(int i = 0; i< sisalto1.size()-1;i++) {
+	  			yhdista.append(sisalto1.get(i));
+	  		}
+  		for(int i = 0; i< sisalto2.size()-1;i++) {
+  			yhdista.append(sisalto2.get(i));
+  		}
+  	yhdista.deleteCharAt(yhdista.length()-1);
+  	poistetut++;
+  	if(poistetut > maara)laskutoimitus = false;
+  	}
+  	
   	
   	public void toteuta() {
   		String merkki = sisalto1.get(index);
@@ -247,6 +293,12 @@ public class laskinController {
 			break;
 		case "-":
 			vahenna();
+			break;
+		case "x":
+			kerro();
+			break;
+		case "/":
+			jaa();
 			break;
   	}
 	
