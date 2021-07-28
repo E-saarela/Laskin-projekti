@@ -1,20 +1,17 @@
 package LaskinFx;
 
+
+
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.List;
-
-import com.sun.javafx.css.StyleCacheEntry.Key;
-
 import fi.jyu.mit.ohj2.Mjonot;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 
 public class laskinController {
-
+	
     @FXML
     private TextArea naytto;
     @FXML
@@ -57,17 +54,16 @@ public class laskinController {
     private Button piste;
     @FXML
     private Button equals;
+    
 
-    
-    
-    @FXML
+	@FXML
     void handleClear(ActionEvent event) {
     	
     }
 
     @FXML
     void handleEquals(ActionEvent event) {
-
+    	toteuta();
     }
 
     @FXML
@@ -121,8 +117,11 @@ public class laskinController {
 //////////////////////////////////////////////////////////////////
     
 
-      private ArrayList <String> sisalto = new ArrayList<String>();
-      boolean laskutoimitus = false;
+      private ArrayList <String> sisalto1 = new ArrayList<String>();
+      private ArrayList <String> sisalto2 = new ArrayList<String>();
+      private boolean laskutoimitus = false;
+      private String[] luvut = {"0", "1", "2", "3", "4", "5", "6",
+    		  "7", "8", "9"};
  
    /**
     public String venaa() {
@@ -138,7 +137,8 @@ public class laskinController {
     
     private void kasitteleNumerot(ActionEvent painettu) {
     	String s = painettu.toString();
-    	sisalto.add(s);
+  //  	if(laskutoimitus == true)sisalto2.add(s);
+    	sisalto1.add(s);
     	StringBuffer sb = new StringBuffer();
     	sb.append(s);
     	char c =',';
@@ -161,28 +161,50 @@ public class laskinController {
     public void lisaa() {
     if(laskutoimitus == true)return;
     laskutoimitus = true;
-    String tuloste =  haeSisalto();
+    StringBuffer sb = new StringBuffer();
+    String a = new String();
+    ArrayList <String> tuloste =  haeSisalto();
+    for(int i = 0;i < tuloste.size();i++) {
+    	sb.append(tuloste.get(i));
+    }
+    a = sb.toString();
     naytto.appendText("+");
-                                                    /// täytyy tehä action listeneri
+    sisalto1.add("+");
+                                                  
     int x = 0;
    }
 
-	private String haeSisalto() {
-		StringBuffer sis = new StringBuffer();
+	private ArrayList <String> haeSisalto() {
+	    ArrayList <String> sis = new ArrayList<String>();
 		char c =',';
-		for(int i = 0; i<sisalto.size();i++) {
+		for(int i = 0; i<sisalto1.size();i++) {
 			StringBuffer vali = new StringBuffer();
-			vali.append(sisalto.get(i));
+			vali.append(sisalto1.get(i));
 			String ss = Mjonot.erota(vali, c);
 			char cc = ss.charAt(ss.length()-1);
 	    	String numero  = Character.toString(cc);
-			sis.append(numero);			
+			sis.add(numero);			
 		}
-		String palautus = sis.toString();
-		return palautus;
+		return sis;
 
 	}
-    
+	
+	public void toteuta() {
+		boolean muuttuiko = false;
+		ArrayList <String> sis = haeSisalto();
+		StringBuffer numerot = new StringBuffer();                                      //sis.replaceAll("[^0-9]", "x");
+		for(int i = 0; i < sis.size();i++) {
+			for(int j = 0; j < luvut.length;j++) {
+				if(sis.get(i).equals(luvut[j]) ) {
+					numerot.append(luvut[j]);
+					muuttuiko = true;
+				}
+			}
+			if(muuttuiko = false && numerot.length() != 0)  numerot.append("X");
+			muuttuiko = false;	
+		}
+		System.out.println(numerot);
+	}
 
 }
 
