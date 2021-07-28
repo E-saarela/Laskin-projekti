@@ -1,17 +1,14 @@
 package LaskinFx;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import com.sun.javafx.css.StyleCacheEntry.Key;
 
 import fi.jyu.mit.ohj2.Mjonot;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
+
 
 public class laskinController {
 
@@ -62,7 +59,7 @@ public class laskinController {
     
     @FXML
     void handleClear(ActionEvent event) {
-    	
+    	tyhjenna();
     }
 
     @FXML
@@ -108,7 +105,7 @@ public class laskinController {
 
     @FXML
     void handleVah(ActionEvent event) {
-
+    	vahenna();
     }
 
     @FXML
@@ -124,21 +121,9 @@ public class laskinController {
     private ArrayList <String> sisalto1 = new ArrayList<String>();
     private ArrayList <String> sisalto2 = new ArrayList<String>();
     private boolean laskutoimitus = false;
-    private String[] luvut = {"0", "1", "2", "3", "4", "5", "6",
-  		  "7", "8", "9"};
     private int index;
 
-    /**
-  public String venaa() {
-  	boolean valmista = false;
-  	while(valmista=false) {
-  		String input = naytto.getText();
-  		if
-  	}
-  	
-     return null;
-  }
-*/  
+ 
   
     private void kasitteleNumerot(ActionEvent painettu) {
   	String s = painettu.toString();
@@ -156,7 +141,9 @@ public class laskinController {
   	int luku = Integer.parseInt(numero);
   	String x = naytto.getText();
   	if(x.charAt(0) == '0') {
-  		naytto.clear();	
+  		naytto.clear();
+  		index = 1;
+  		sisalto1.add(0, "0");
   	}
     lisaaNayttoon(luku);
     }
@@ -168,6 +155,16 @@ public class laskinController {
 		Integer palautus = lisattava; 
 		naytto.appendText(palautus.toString());
 	}
+  	
+  	
+  	public void tyhjenna() {
+  		sisalto1.clear();
+  		sisalto2.clear();
+  		laskutoimitus = false;
+  		index = 0;
+  		naytto.clear();
+  		lisaaNayttoon(0);
+  	}
   
   
   	public void lisaa() {
@@ -203,6 +200,41 @@ public class laskinController {
   	sisalto1.add("+");
   	index = sisalto1.size()-1;
   	}
+  	
+  	
+  	public void vahenna() {
+  	  	if(laskutoimitus == true) {
+  	  		String a = new String();
+  	  	  	StringBuffer sb = new StringBuffer();
+  	  	  	String b = new String();
+  		  	StringBuffer sb2 = new StringBuffer();
+  	  		for(int i = 0; i< sisalto1.size()-1;i++) {
+  	  			sb.append(sisalto1.get(i));
+  	  		}
+  	  		for(int i = 0; i< sisalto2.size();i++) {
+  	  			sb2.append(sisalto2.get(i));
+  	  		}
+  	  		a = sb.toString();
+  	  		b = sb2.toString();
+  	  		int n1 = Integer.parseInt(a);
+  	  		int n2 = Integer.parseInt(b);
+  	  		int tulos = n1-n2;
+  	  		naytto.clear();
+  	  		lisaaNayttoon (tulos);
+  	  		laskutoimitus = false;
+  	  		sisalto1.clear();
+  	  		sisalto2.clear();
+  	  		String[] uusi = String.valueOf(tulos).split("");
+  	  		for(int i = 0; i < uusi.length;i++) {
+  	  			sisalto1.add(uusi[i]);
+  	  		}
+  	  		return;
+  	  	}
+  	  	laskutoimitus = true;
+  	  	naytto.appendText("-");
+  	  	sisalto1.add("-");
+  	  	index = sisalto1.size()-1;
+  	  	}
 
     
   	
@@ -212,6 +244,9 @@ public class laskinController {
   		switch(merkki) {
 		case "+":
 			lisaa();
+			break;
+		case "-":
+			vahenna();
 			break;
   	}
 	
