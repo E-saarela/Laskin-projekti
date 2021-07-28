@@ -67,7 +67,7 @@ public class laskinController {
 
     @FXML
     void handleEquals(ActionEvent event) {
-
+    	toteuta();
     }
 
     @FXML
@@ -121,68 +121,99 @@ public class laskinController {
 //////////////////////////////////////////////////////////////////
     
 
-      private ArrayList <String> sisalto = new ArrayList<String>();
-      boolean laskutoimitus = false;
- 
-   /**
-    public String venaa() {
-    	boolean valmista = false;
-    	while(valmista=false) {
-    		String input = naytto.getText();
-    		if
-    	}
-    	
-       return null;
-    }
-  */  
-    
+    private ArrayList <String> sisalto1 = new ArrayList<String>();
+    private ArrayList <String> sisalto2 = new ArrayList<String>();
+    private boolean laskutoimitus = false;
+    private String[] luvut = {"0", "1", "2", "3", "4", "5", "6",
+  		  "7", "8", "9"};
+    private int index;
+
+    /**
+  public String venaa() {
+  	boolean valmista = false;
+  	while(valmista=false) {
+  		String input = naytto.getText();
+  		if
+  	}
+  	
+     return null;
+  }
+*/  
+  
     private void kasitteleNumerot(ActionEvent painettu) {
-    	String s = painettu.toString();
-    	sisalto.add(s);
-    	StringBuffer sb = new StringBuffer();
-    	sb.append(s);
-    	char c =',';
-    	String ss = Mjonot.erota(sb, c);
-    	char vali = ss.charAt(ss.length()-1);
-    	String numero  = Character.toString(vali);
-        int luku = Integer.parseInt(numero);
-        lisaaNayttoon(luku);
+  	String s = painettu.toString();
+  	StringBuffer sb = new StringBuffer();
+  	sb.append(s);
+  	char c =',';
+  	String ss = Mjonot.erota(sb, c);
+  	char vali = ss.charAt(ss.length()-1);
+  	String numero  = Character.toString(vali);
+  	if(laskutoimitus == true) {
+  		sisalto2.add(numero);
+  	}else { 
+  		sisalto1.add(numero);
+  	}  
+  	int luku = Integer.parseInt(numero);
+  	String x = naytto.getText();
+  	if(x.charAt(0) == '0') {
+  		naytto.clear();	
+  	}
+    lisaaNayttoon(luku);
     }
 
 	
-    public void lisaaNayttoon(int lisattava) {
+  	public void lisaaNayttoon(int lisattava) {
 		Integer nolla = 0;
 		if(naytto.textProperty().getValueSafe() == nolla.toString())naytto.clear();
 		Integer palautus = lisattava; 
 		naytto.appendText(palautus.toString());
 	}
-    
-    
-    public void lisaa() {
-    if(laskutoimitus == true)return;
-    laskutoimitus = true;
-    String tuloste =  haeSisalto();
-    naytto.appendText("+");
-                                                    /// täytyy tehä action listeneri
-    int x = 0;
-   }
+  
+  
+  	public void lisaa() {
+  	if(laskutoimitus == true) {
+  		String a = new String();
+  	  	StringBuffer sb = new StringBuffer();
+  	  	String b = new String();
+	  	StringBuffer sb2 = new StringBuffer();
+  		for(int i = 0; i< sisalto1.size()-1;i++) {
+  			sb.append(sisalto1.get(i));
+  		}
+  		for(int i = 0; i< sisalto2.size();i++) {
+  			sb2.append(sisalto2.get(i));
+  		}
+  		a = sb.toString();
+  		b = sb2.toString();
+  		int n1 = Integer.parseInt(a);
+  		int n2 = Integer.parseInt(b);
+  		int tulos = n1+n2;
+  		naytto.clear();
+  		lisaaNayttoon (tulos);
+  		laskutoimitus = false;
+  		sisalto1.clear();
+  		sisalto2.clear();
+  		String[] uusi = String.valueOf(tulos).split("");
+  		for(int i = 0; i < uusi.length;i++) {
+  			sisalto1.add(uusi[i]);
+  		}
+  		return;
+  	}
+  	laskutoimitus = true;
+  	naytto.appendText("+");
+  	sisalto1.add("+");
+  	index = sisalto1.size()-1;
+  	}
 
-	private String haeSisalto() {
-		StringBuffer sis = new StringBuffer();
-		char c =',';
-		for(int i = 0; i<sisalto.size();i++) {
-			StringBuffer vali = new StringBuffer();
-			vali.append(sisalto.get(i));
-			String ss = Mjonot.erota(vali, c);
-			char cc = ss.charAt(ss.length()-1);
-	    	String numero  = Character.toString(cc);
-			sis.append(numero);			
-		}
-		String palautus = sis.toString();
-		return palautus;
-
-	}
     
-
+  	
+  	public void toteuta() {
+  		String merkki = sisalto1.get(index);
+  	    
+  		switch(merkki) {
+		case "+":
+			lisaa();
+			break;
+  	}
+	
 }
-
+}
