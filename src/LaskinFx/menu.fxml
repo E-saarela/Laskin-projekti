@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="384.0" prefWidth="432.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="LaskinFx.laskinController">
+<AnchorPane prefHeight="384.0" prefWidth="432.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="LaskinFx.laskinController">
    <children>
       <SplitPane dividerPositions="0.26465364120781526" layoutX="-4.0" layoutY="-15.0" orientation="VERTICAL" prefHeight="395.0" prefWidth="432.0">
         <items>
@@ -45,7 +45,7 @@
                               <Font name="Arial Black" size="23.0" />
                            </font>
                         </Button>
-                        <Button mnemonicParsing="false" onAction="#handleX2" prefHeight="56.0" prefWidth="163.0" text="X^2" fx:id="x2">
+                        <Button mnemonicParsing="false" onAction="#handleX2" prefHeight="56.0" prefWidth="163.0" text="X²" fx:id="x2">
                            <GridPane.margin>
                               <Insets />
                            </GridPane.margin>
