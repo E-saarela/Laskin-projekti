@@ -79,6 +79,8 @@ public class laskinController {
     private ArrayList <String> sisalto1 = new ArrayList<String>();
     private ArrayList <String> sisalto2 = new ArrayList<String>();
     private boolean laskutoimitus = false;
+    private boolean desimaali = false;
+    private boolean desimaalitulos = false;
     private int index;
     int poistetut = 0;
 
@@ -98,22 +100,87 @@ public class laskinController {
   	}else { 
   		sisalto1.add(numero);
   	}  
-  	int luku = Integer.parseInt(numero);
+  	double luku = Double.parseDouble(numero);
   	String x = naytto.getText();
   	if(x.charAt(0) == '0') {
   		naytto.clear();
   		index = 1;
   		sisalto1.add(0, "0");
   	}
+  	onkoTulosInt(luku);
     lisaaNayttoon(luku);
     }
+    
+    public boolean onkoTulosDesimaali(double luku) {
+    	String muunnos = Double.toString(luku);
+    	if(muunnos == null) {
+    		desimaalitulos = false;
+    		return false;
+    	}
+	    String[] listattu = muunnos.split("");
+	    for(int i = 0; i < listattu.length;i++) {
+	    	if(listattu[i].equals(".")) {
+	    		desimaalitulos = true;
+	    		return true;
+	    	}
+	    }
+	    desimaalitulos = false;
+    	return false;
+    }
+    
+    
+    public int indexOf(String[] luvut) {
+    	for(int i = 0; i < luvut.length; i++) {
+    		if(luvut[i].equals("."))return i;
+    	}
+      return 0;
+    }
+    
+    
+    public void onkoTulosInt(double luku) {
+    	String muunnos = Double.toString(luku);
+    	if(muunnos == null) {
+    		desimaalitulos = false;
+    		return;
+    	}
+	    String[] listattu = muunnos.split("");
+	    int index = indexOf(listattu);
+	    if(index == 0) {
+	    	desimaalitulos = false;
+	    	return;
+	    }
+		for(int i = index+1; i < listattu.length;i++) {
+			if(listattu[i].equals("0")){
+				continue;
+			}else {
+				desimaalitulos = true;
+				return;
+			}
+		 }
+	   desimaalitulos = false;
+    }
+  
 
 	
-  	public void lisaaNayttoon(int lisattava) {
+  	public void lisaaNayttoon(double luku) {
 		Integer nolla = 0;
+    	StringBuilder vali = new StringBuilder();
 		if(naytto.textProperty().getValueSafe() == nolla.toString())naytto.clear();
-		Integer palautus = lisattava; 
-		naytto.appendText(palautus.toString());
+		Double palautus = luku;
+		if(desimaalitulos == true) {
+			naytto.appendText(palautus.toString());
+		}else {
+			String muunnos = Double.toString(luku);
+	    	if(muunnos == null)return;
+		    String[] listattu = muunnos.split("");
+		    for(int i = 0; i < listattu.length;i++) {
+		    	if(listattu[i].equals("."))break;
+		    	vali.append(listattu[i]);
+		    }
+		    String oikea = vali.toString();
+		    naytto.appendText(oikea);
+		}
+
 	}
   	
   	
@@ -121,6 +188,7 @@ public class laskinController {
   		sisalto1.clear();
   		sisalto2.clear();
   		laskutoimitus = false;
+  		desimaalitulos = false;
   		index = 0;
   		naytto.clear();
   		lisaaNayttoon(0);
@@ -141,10 +209,12 @@ public class laskinController {
   		}
   		a = sb.toString();
   		b = sb2.toString();
-  		int n1 = Integer.parseInt(a);
-  		int n2 = Integer.parseInt(b);
-  		int tulos = n1+n2;
+  		double n1 = Double.parseDouble(a);
+  		double n2 = Double.parseDouble(b);
+  		double tulos = n1+n2;
   		naytto.clear();
+  		onkoTulosDesimaali(tulos);
+  		onkoTulosInt(tulos);
   		lisaaNayttoon (tulos);
   		laskutoimitus = false;
   		sisalto1.clear();
@@ -176,10 +246,12 @@ public class laskinController {
   	  		}
   	  		a = sb.toString();
   	  		b = sb2.toString();
-  	  		int n1 = Integer.parseInt(a);
-  	  		int n2 = Integer.parseInt(b);
-  	  		int tulos = n1-n2;
+  	  		double n1 = Double.parseDouble(a);
+  	  		double n2 = Double.parseDouble(b);
+  	  		double tulos = n1-n2;
   	  		naytto.clear();
+  	  		onkoTulosDesimaali(tulos);
+  	  		onkoTulosInt(tulos);
   	  		lisaaNayttoon (tulos);
   	  		laskutoimitus = false;
   	  		sisalto1.clear();
@@ -211,10 +283,12 @@ public class laskinController {
   	  		}
   	  		a = sb.toString();
   	  		b = sb2.toString();
-  	  		int n1 = Integer.parseInt(a);
-  	  		int n2 = Integer.parseInt(b);
-  	  		int tulos = n1*n2;
+  	  		double n1 = Double.parseDouble(a);
+  	  		double n2 = Double.parseDouble(b);
+  	  		double tulos = n1*n2;
   	  		naytto.clear();
+  	  		onkoTulosDesimaali(tulos);
+  	  		onkoTulosInt(tulos);
   	  		lisaaNayttoon (tulos);
   	  		laskutoimitus = false;
   	  		sisalto1.clear();
@@ -246,11 +320,13 @@ public class laskinController {
   	  		}
   	  		a = sb.toString();
   	  		b = sb2.toString();
-  	  		int n1 = Integer.parseInt(a);
-  	  		int n2 = Integer.parseInt(b);
+  	  		double n1 = Double.parseDouble(a);
+  	  		double n2 = Double.parseDouble(b);
   	  		if(n2 != 0) {
-  	  		int tulos = n1/n2;
+  	  		double tulos = n1/n2;
   	  		naytto.clear();
+  	  		onkoTulosDesimaali(tulos);
+  	  		onkoTulosInt(tulos);
   	  		lisaaNayttoon (tulos);
   	  		laskutoimitus = false;
   	  		sisalto1.clear();
@@ -300,7 +376,7 @@ public class laskinController {
 		case "/":
 			jaa();
 			break;
-  	}
+  		}
 	
-}
+  	}
 }
