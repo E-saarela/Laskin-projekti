@@ -87,7 +87,6 @@ public class laskinController {
  
   
     private void kasitteleNumerot(ActionEvent painettu) {
-    int poistetut = 0;
   	String s = painettu.toString();
   	StringBuffer sb = new StringBuffer();
   	sb.append(s);
@@ -105,7 +104,7 @@ public class laskinController {
   	if(x.charAt(0) == '0') {
   		naytto.clear();
   		index = 1;
-  		sisalto1.add(0, "0");
+  	//	sisalto1.add(0, "0");
   	}
   	onkoTulosInt(luku);
     lisaaNayttoon(luku);
@@ -180,7 +179,7 @@ public class laskinController {
 		    String oikea = vali.toString();
 		    naytto.appendText(oikea);
 		}
-
+		poistetut = 0;
 	}
   	
   	
@@ -201,7 +200,7 @@ public class laskinController {
   	  	StringBuffer sb = new StringBuffer();
   	  	String b = new String();
 	  	StringBuffer sb2 = new StringBuffer();
-  		for(int i = 0; i< sisalto1.size()-1;i++) {
+  		for(int i = 0; i< sisalto1.size();i++) {
   			sb.append(sisalto1.get(i));
   		}
   		for(int i = 0; i< sisalto2.size();i++) {
@@ -209,7 +208,24 @@ public class laskinController {
   		}
   		a = sb.toString();
   		b = sb2.toString();
-  		double n1 = Double.parseDouble(a);
+  		if(b.length() == 0) {
+  			if(sb.charAt(sb.length()-1) == '+'||sb.charAt(sb.length()-1) == '-'||sb.charAt(sb.length()-1) == '/'||sb.charAt(sb.length()-1) == 'x') {
+  				
+  			}else {
+  				laskutoimitus = true;
+  	  		  	naytto.appendText("+");
+  	  		  	sisalto1.add("+");
+  	  		  	index = sisalto1.size()-1;
+  	  		  	return;
+  			}
+  		}
+  		StringBuffer sb3 = new StringBuffer();
+  	  	String aa = new String();
+  		for(int i = 0; i< sisalto1.size()-1;i++) {
+  			sb3.append(sisalto1.get(i));
+  		}
+  		aa = sb3.toString();
+  		double n1 = Double.parseDouble(aa);
   		double n2 = Double.parseDouble(b);
   		double tulos = n1+n2;
   		naytto.clear();
@@ -246,6 +262,13 @@ public class laskinController {
   	  		}
   	  		a = sb.toString();
   	  		b = sb2.toString();
+  	  		if((b.length() == 0)) {
+  	  			laskutoimitus = true;
+  	  			naytto.appendText("-");
+  	  			sisalto1.add("-");
+  	  			index = sisalto1.size()-1;
+  	  			return;
+  	  		}
   	  		double n1 = Double.parseDouble(a);
   	  		double n2 = Double.parseDouble(b);
   	  		double tulos = n1-n2;
@@ -283,6 +306,13 @@ public class laskinController {
   	  		}
   	  		a = sb.toString();
   	  		b = sb2.toString();
+  	  		if(b.length() == 0) {
+  	  			laskutoimitus = true;
+  	  			naytto.appendText("x");
+  	  			sisalto1.add("x");
+  	  			index = sisalto1.size()-1;
+  	  			return;
+  	  		}
   	  		double n1 = Double.parseDouble(a);
   	  		double n2 = Double.parseDouble(b);
   	  		double tulos = n1*n2;
@@ -320,6 +350,13 @@ public class laskinController {
   	  		}
   	  		a = sb.toString();
   	  		b = sb2.toString();
+  	  		if(b.length() == 0) {
+  	  			laskutoimitus = true;
+  	  			naytto.appendText("/");
+  	  			sisalto1.add("/");
+  	  			index = sisalto1.size()-1;
+  	  			return;
+  	  		}
   	  		double n1 = Double.parseDouble(a);
   	  		double n2 = Double.parseDouble(b);
   	  		if(n2 != 0) {
@@ -347,16 +384,68 @@ public class laskinController {
   	
   	public void poista(){
   		int maara = sisalto2.size();
+  		
   		StringBuffer yhdista = new StringBuffer();
-  		for(int i = 0; i< sisalto1.size()-1;i++) {
+  		if(laskutoimitus == true) {
+  			for(int i = 0; i< sisalto1.size();i++) {
 	  			yhdista.append(sisalto1.get(i));
 	  		}
-  		for(int i = 0; i< sisalto2.size()-1;i++) {
+  		for(int i = 0; i< sisalto2.size();i++) {
   			yhdista.append(sisalto2.get(i));
+  			}
+  		String x = naytto.getText();
+  		if(yhdista.length() == 1 && x.charAt(0) == '0')return;
+  		}else {
+  			for(int i = 0; i< sisalto1.size();i++) {
+	  			yhdista.append(sisalto1.get(i));
+	  		}
   		}
-  	yhdista.deleteCharAt(yhdista.length()-1);
-  	poistetut++;
-  	if(poistetut > maara)laskutoimitus = false;
+  		if(yhdista.length() == 1) {
+  			sisalto1.clear();
+  			naytto.clear();
+  	  		naytto.appendText("0");
+  	  		poistetut++;
+  	  		if(poistetut > maara)laskutoimitus = false;
+  	  		return;
+  		}else {
+  		yhdista.deleteCharAt(yhdista.length()-1);
+  		naytto.clear();
+  		naytto.appendText(yhdista.toString());
+  		if(poistetut > maara) {
+  			sisalto2.clear();
+  			sisalto1.clear();
+  			String s = yhdista.toString();
+  			String[] nayttoon = s.split("");
+  			for(int i = 0;i < nayttoon.length;i++) {
+  				sisalto1.add(nayttoon[i]);
+
+  			}
+  			laskutoimitus = false;
+  			return;
+  		}
+  		sisalto2.clear();
+		sisalto1.clear();
+  		String s = yhdista.toString();
+		String[] sisalto = s.split("");
+		for(int i = s.length();i > maara;i--) {
+				if(maara == 0)break;
+				if(i <= maara)break;
+				if(maara-poistetut > 0)sisalto2.add(sisalto[i]);
+				else {
+					laskutoimitus = false;
+					break;
+				}
+		}
+		int raja = s.length()-maara;
+		for(int i = 0; i <= raja-1;i++) {
+			sisalto1.add(sisalto[i]);
+		}
+		for(int i = 0; i < sisalto1.size();i++) {
+			if(sisalto1.get(i).equals("+")||sisalto1.get(i).equals("-")||sisalto1.get(i).equals("/")||sisalto1.get(i).equals("x"))laskutoimitus = true;
+		}
+		poistetut++;
+  	  }
+  		
   	}
   	
   	
