@@ -212,6 +212,7 @@ public class laskinController {
   		}
   		String a = sb1.toString();
   		String b = sb2.toString();
+  		if(b.length() == 0)return;
   		double tulos = Double.parseDouble(a) + Double.parseDouble(b);
   		naytto.clear();
 	  	onkoTasan(tulos);
@@ -221,6 +222,7 @@ public class laskinController {
   	}
   	
   	naytto.appendText("+");
+  	poistetut=0;
   	laskutoimitus = true;
   	}
   	
@@ -244,6 +246,7 @@ public class laskinController {
   	  		}
   	  		String a = sb1.toString();
   	  		String b = sb2.toString();
+  	  		if(b.length() == 0)return;
   	  		double tulos = Double.parseDouble(a) - Double.parseDouble(b);
   	  		naytto.clear();
   		  	onkoTasan(tulos);
@@ -253,6 +256,7 @@ public class laskinController {
   	  	}
   	  	
   	  	naytto.appendText("-");
+  	  	poistetut=0;
   	  	laskutoimitus = true;
   	  	}
   	
@@ -276,6 +280,7 @@ public class laskinController {
   	  		}
   	  		String a = sb1.toString();
   	  		String b = sb2.toString();
+  	  		if(b.length() == 0)return;
   	  		double tulos = Double.parseDouble(a) * Double.parseDouble(b);
   	  		naytto.clear();
   		  	onkoTasan(tulos);
@@ -285,6 +290,7 @@ public class laskinController {
   	  	}
   	  	
   	  	naytto.appendText("x");
+  	  	poistetut=0;
   	  	laskutoimitus = true;
   	}
   	
@@ -308,6 +314,7 @@ public class laskinController {
   	  		}
   	  		String a = sb1.toString();
   	  		String b = sb2.toString();
+  	  		if(b.length() == 0)return;
   	  		if(b.equals("0"))return;
   	  		double tulos = Double.parseDouble(a) / Double.parseDouble(b);
   	  		naytto.clear();
@@ -318,13 +325,27 @@ public class laskinController {
   	  	}
   	  	
   	  	naytto.appendText("/");
+  	  	poistetut=0;
   	  	laskutoimitus = true;
   	}
   	
   	
   	public void poista(){
-  		
-  		
+  		int maara = naytto.getText().length();
+  		if(naytto.getText().length() == 1) {
+  			sisalto1.clear(); 
+  			naytto.clear();
+  	  		naytto.appendText("0");
+  	  		return;
+  		}
+  		StringBuffer sisalto = new StringBuffer();
+  		int raja = etsiMerkinPaikka();
+  		sisalto.append(naytto.getText());
+  		sisalto.deleteCharAt(sisalto.length()-1);
+  		poistetut++;
+  		if(maara- poistetut == raja)laskutoimitus = false;
+  		naytto.clear();
+  		naytto.appendText(sisalto.toString());
   	}
   	
   	
