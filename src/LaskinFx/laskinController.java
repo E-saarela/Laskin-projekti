@@ -93,7 +93,7 @@ public class laskinController {
       	String ss = Mjonot.erota(sb, c);
       	char vali = ss.charAt(ss.length()-1);
       	String numero  = Character.toString(vali);
-      	double luku = Double.parseDouble(numero);
+      	long luku = Long.parseLong(numero);
       	String x = naytto.getText();
       	if(x.charAt(0) == '0') {
       		naytto.clear();
@@ -152,15 +152,28 @@ public class laskinController {
     	}
 		return "";
     } 
+    
+    
+    public int etsiMerkinPaikka() {
+    	String s = naytto.getText();
+    	StringBuffer sb = new StringBuffer();
+    	sb.append(s);
+    	for(int i = 0; i<sb.length();i++) {
+    		if(sb.charAt(i) == '+'||sb.charAt(i) == '-'||sb.charAt(i) == '/'||sb.charAt(i) == 'x'){
+    			return i;
+    		}
+    	}
+		return 0;
+    }
    
 
-  	public void lisaaNayttoon(double luku) {
+  	public void lisaaNayttoon(long luku) {
     	StringBuilder vali = new StringBuilder();
-		Double palautus = luku;
+		long palautus = luku;
 		if(desimaalitulos == true) {
-			naytto.appendText(palautus.toString());
+			naytto.appendText(Long.toString(palautus));
 		}else {
-			String muunnos = Double.toString(luku);
+			String muunnos = Long.toString(palautus);
 	    	if(muunnos == null)return;
 		    String[] listattu = muunnos.split("");
 		    for(int i = 0; i < listattu.length;i++) {
@@ -187,10 +200,28 @@ public class laskinController {
   	public void lisaa() {
   	if(laskutoimitus == true) {
   		String s = naytto.getText();
-  		String[]sisalto = s.split("+");
-  		String a = "a";
-  		
-  		
+  		String[] sisalto = s.split("");
+  		int paikka = etsiMerkinPaikka();
+  		StringBuffer sb1 = new StringBuffer();
+  		StringBuffer sb2 = new StringBuffer();
+  		int i = 0;
+  		while(i < paikka) {
+  			sb1.append(sisalto[i]);
+  			i++;
+  		}
+  		i = paikka+1;
+  		while(i < sisalto.length) {
+  			sb2.append(sisalto[i]);
+  			i++;
+  		}
+  		String a = sb1.toString();
+  		String b = sb2.toString();
+  		long tulos = Long.parseLong(a) + Long.parseLong(b);
+  		naytto.clear();
+	  	onkoTulosInt(tulos);
+	    lisaaNayttoon (tulos);
+	  	laskutoimitus = false;
+	  	return;
   	}
   	
   	naytto.appendText("+");
