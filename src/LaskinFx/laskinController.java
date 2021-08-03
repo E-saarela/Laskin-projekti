@@ -68,7 +68,7 @@ public class laskinController {
 
     @FXML
     void handleX2(ActionEvent event) {
-
+    	toinenPotenssi();
     }
     
     
@@ -79,7 +79,6 @@ public class laskinController {
     private ArrayList <String> sisalto1 = new ArrayList<String>();
     private ArrayList <String> sisalto2 = new ArrayList<String>();
     private boolean laskutoimitus = false;
-    private boolean desimaali = false;
     private boolean desimaalitulos = false;
     int poistetut = 0;
 
@@ -327,6 +326,17 @@ public class laskinController {
   	  	naytto.appendText("/");
   	  	poistetut=0;
   	  	laskutoimitus = true;
+  	}
+  	
+  	
+  	public void toinenPotenssi() {
+  		if(laskutoimitus == true)return;
+  		String sisalto = naytto.getText();
+  		double tulos = Double.parseDouble(sisalto)*Double.parseDouble(sisalto);
+  		poistetut = 0;
+  		onkoTasan(tulos);
+  		naytto.clear();
+  		lisaaNayttoon(tulos);
   	}
   	
   	
