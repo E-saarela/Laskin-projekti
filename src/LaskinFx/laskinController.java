@@ -37,7 +37,7 @@ public class laskinController {
 
     @FXML
     void handleNeg(ActionEvent event) {
-
+    	vastaluku();
     }
 
     @FXML
@@ -94,13 +94,20 @@ public class laskinController {
       	String numero  = Character.toString(vali);
       	double luku = Double.parseDouble(numero);
       	String x = naytto.getText();
-      	if(x.charAt(0) == '0') {
-      		naytto.clear();
-      	//	sisalto1.add(0, "0");
+      	if(x.length() < 3) {
+      		onkoTasan(luku);
+            lisaaNayttoon(luku);
+      	}else {
+      			if(x.charAt(0) == '0' && laskutoimitus == false && x.charAt(2) == '\n' ) {
+      				naytto.clear();
+      				naytto.appendText("0");      				
+      			}
+      			onkoTasan(luku);
+  		        lisaaNayttoon(luku);
       	}
-     	onkoTasan(luku);
-        lisaaNayttoon(luku);
+      	
     }
+    
     
     public boolean onkoNayttoNolla() {
     	String x = naytto.getText();                                        //tätä voidaan kysyä vain silloin kun tiedetään että näytössä on vain yksi luku
@@ -140,7 +147,7 @@ public class laskinController {
     	String s = naytto.getText();
     	StringBuffer sb = new StringBuffer();
     	sb.append(s);
-    	for(int i = 0; i<sb.length();i++) {
+    	for(int i = 1; i<sb.length();i++) {
     		if(sb.charAt(i) == '+'||sb.charAt(i) == '-'||sb.charAt(i) == '/'||sb.charAt(i) == 'x'){
     			return Character.toString(sb.charAt(i));
     		}
@@ -153,7 +160,7 @@ public class laskinController {
     	String s = naytto.getText();
     	StringBuffer sb = new StringBuffer();
     	sb.append(s);
-    	for(int i = 0; i<sb.length();i++) {
+    	for(int i = 1; i<sb.length();i++) {
     		if(sb.charAt(i) == '+'||sb.charAt(i) == '-'||sb.charAt(i) == '/'||sb.charAt(i) == 'x'){
     			return i;
     		}
@@ -165,6 +172,7 @@ public class laskinController {
   	public void lisaaNayttoon(double luku) {
     	StringBuilder vali = new StringBuilder();
 		double palautus = luku;
+		if(naytto.getText().length() == 1 && naytto.getText().equals("0"))naytto.clear();		
 		if(desimaalitulos == true) {
 			naytto.appendText(String.format ("%.12f", palautus));
 		}else {
@@ -337,6 +345,15 @@ public class laskinController {
   		onkoTasan(tulos);
   		naytto.clear();
   		lisaaNayttoon(tulos);
+  	}
+  	
+  	public void vastaluku() {
+  		if(naytto.getText().equals("0"))return;
+  		if(naytto.getText(0, 1).equals("-")) {
+  			naytto.deleteText(0, 1);
+  			return;
+  		}
+  		naytto.insertText(0, "-");
   	}
   	
   	
