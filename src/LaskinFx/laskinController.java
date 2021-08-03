@@ -93,13 +93,13 @@ public class laskinController {
       	String ss = Mjonot.erota(sb, c);
       	char vali = ss.charAt(ss.length()-1);
       	String numero  = Character.toString(vali);
-      	long luku = Long.parseLong(numero);
+      	double luku = Double.parseDouble(numero);
       	String x = naytto.getText();
       	if(x.charAt(0) == '0') {
       		naytto.clear();
       	//	sisalto1.add(0, "0");
       	}
-     	onkoTulosInt(luku);
+     	onkoTasan(luku);
         lisaaNayttoon(luku);
     }
     
@@ -118,7 +118,7 @@ public class laskinController {
     }
     
     
-    public void onkoTulosInt(double luku) {
+    public void onkoTasan(double luku) {
     	String muunnos = Double.toString(luku);
     	if(muunnos == null) {
     		desimaalitulos = false;
@@ -126,10 +126,6 @@ public class laskinController {
     	}
 	    String[] listattu = muunnos.split("");
 	    int index = indexOf(listattu);
-	    if(index == 0) {
-	    	desimaalitulos = false;
-	    	return;
-	    }
 		for(int i = index+1; i < listattu.length;i++) {
 			if(listattu[i].equals("0")){
 				continue;
@@ -167,13 +163,13 @@ public class laskinController {
     }
    
 
-  	public void lisaaNayttoon(long luku) {
+  	public void lisaaNayttoon(double luku) {
     	StringBuilder vali = new StringBuilder();
-		long palautus = luku;
+		double palautus = luku;
 		if(desimaalitulos == true) {
-			naytto.appendText(Long.toString(palautus));
+			naytto.appendText(String.format ("%.12f", palautus));
 		}else {
-			String muunnos = Long.toString(palautus);
+			String muunnos = String.format ("%.1f", palautus); 
 	    	if(muunnos == null)return;
 		    String[] listattu = muunnos.split("");
 		    for(int i = 0; i < listattu.length;i++) {
@@ -198,7 +194,7 @@ public class laskinController {
   
   
   	public void lisaa() {
-  	if(laskutoimitus == true) {
+  		if(laskutoimitus == true) {
   		String s = naytto.getText();
   		String[] sisalto = s.split("");
   		int paikka = etsiMerkinPaikka();
@@ -216,9 +212,9 @@ public class laskinController {
   		}
   		String a = sb1.toString();
   		String b = sb2.toString();
-  		long tulos = Long.parseLong(a) + Long.parseLong(b);
+  		double tulos = Double.parseDouble(a) + Double.parseDouble(b);
   		naytto.clear();
-	  	onkoTulosInt(tulos);
+	  	onkoTasan(tulos);
 	    lisaaNayttoon (tulos);
 	  	laskutoimitus = false;
 	  	return;
@@ -230,17 +226,99 @@ public class laskinController {
   	
   	
   	public void vahenna() {
+  		if(laskutoimitus == true) {
+  	  		String s = naytto.getText();
+  	  		String[] sisalto = s.split("");
+  	  		int paikka = etsiMerkinPaikka();
+  	  		StringBuffer sb1 = new StringBuffer();
+  	  		StringBuffer sb2 = new StringBuffer();
+  	  		int i = 0;
+  	  		while(i < paikka) {
+  	  			sb1.append(sisalto[i]);
+  	  			i++;
+  	  		}
+  	  		i = paikka+1;
+  	  		while(i < sisalto.length) {
+  	  			sb2.append(sisalto[i]);
+  	  			i++;
+  	  		}
+  	  		String a = sb1.toString();
+  	  		String b = sb2.toString();
+  	  		double tulos = Double.parseDouble(a) - Double.parseDouble(b);
+  	  		naytto.clear();
+  		  	onkoTasan(tulos);
+  		    lisaaNayttoon (tulos);
+  		  	laskutoimitus = false;
+  		  	return;
+  	  	}
   	  	
+  	  	naytto.appendText("-");
+  	  	laskutoimitus = true;
   	  	}
   	
   	
   	public void kerro() {
-  	  	
+  		if(laskutoimitus == true) {
+  	  		String s = naytto.getText();
+  	  		String[] sisalto = s.split("");
+  	  		int paikka = etsiMerkinPaikka();
+  	  		StringBuffer sb1 = new StringBuffer();
+  	  		StringBuffer sb2 = new StringBuffer();
+  	  		int i = 0;
+  	  		while(i < paikka) {
+  	  			sb1.append(sisalto[i]);
+  	  			i++;
+  	  		}
+  	  		i = paikka+1;
+  	  		while(i < sisalto.length) {
+  	  			sb2.append(sisalto[i]);
+  	  			i++;
+  	  		}
+  	  		String a = sb1.toString();
+  	  		String b = sb2.toString();
+  	  		double tulos = Double.parseDouble(a) * Double.parseDouble(b);
+  	  		naytto.clear();
+  		  	onkoTasan(tulos);
+  		    lisaaNayttoon (tulos);
+  		  	laskutoimitus = false;
+  		  	return;
   	  	}
+  	  	
+  	  	naytto.appendText("x");
+  	  	laskutoimitus = true;
+  	}
   	
   	
   	public void jaa() {
+  		if(laskutoimitus == true) {
+  	  		String s = naytto.getText();
+  	  		String[] sisalto = s.split("");
+  	  		int paikka = etsiMerkinPaikka();
+  	  		StringBuffer sb1 = new StringBuffer();
+  	  		StringBuffer sb2 = new StringBuffer();
+  	  		int i = 0;
+  	  		while(i < paikka) {
+  	  			sb1.append(sisalto[i]);
+  	  			i++;
+  	  		}
+  	  		i = paikka+1;
+  	  		while(i < sisalto.length) {
+  	  			sb2.append(sisalto[i]);
+  	  			i++;
+  	  		}
+  	  		String a = sb1.toString();
+  	  		String b = sb2.toString();
+  	  		if(b.equals("0"))return;
+  	  		double tulos = Double.parseDouble(a) / Double.parseDouble(b);
+  	  		naytto.clear();
+  		  	onkoTasan(tulos);
+  		    lisaaNayttoon (tulos);
+  		  	laskutoimitus = false;
+  		  	return;
+  	  	}
   	  	
+  	  	naytto.appendText("/");
+  	  	laskutoimitus = true;
   	}
   	
   	
