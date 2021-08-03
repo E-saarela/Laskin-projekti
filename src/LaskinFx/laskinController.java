@@ -401,7 +401,7 @@ public class laskinController {
 	  		}
   		}
   		if(yhdista.length() == 1) {
-  			sisalto1.clear();
+  			sisalto1.clear(); 
   			naytto.clear();
   	  		naytto.appendText("0");
   	  		poistetut++;
