@@ -436,12 +436,19 @@ public class laskinController {
   	  		naytto.appendText(sisalto.toString());
   	  		return;
   		}
-  		char[] merkki = etsiMerkki().toCharArray();
-  		if(sisalto.charAt(maara-1) == merkki[0])laskutoimitus = false;
+  		if(laskutoimitus == true) {
+  			char[] merkki = etsiMerkki().toCharArray();
+  			if(sisalto.charAt(maara-1) == merkki[0])laskutoimitus = false;
+  			sisalto.deleteCharAt(sisalto.length()-1);
+  			poistetut++;
+  			naytto.clear();
+  			naytto.appendText(sisalto.toString());
+  			return;
+  		}
   		sisalto.deleteCharAt(sisalto.length()-1);
-  		poistetut++;
-  		naytto.clear();
-  		naytto.appendText(sisalto.toString());
+		poistetut++;
+		naytto.clear();
+		naytto.appendText(sisalto.toString());
   	}
   	
   	
