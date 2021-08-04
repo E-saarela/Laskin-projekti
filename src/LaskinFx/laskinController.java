@@ -48,7 +48,7 @@ public class laskinController {
 
 	@FXML
     void handlePiste(ActionEvent event) {
-
+		lisaaPiste();
     }
 
     @FXML
@@ -80,7 +80,8 @@ public class laskinController {
     private ArrayList <String> sisalto2 = new ArrayList<String>();
     private boolean laskutoimitus = false;
     private boolean desimaalitulos = false;
-    private boolean onkonegatiivinen = false;
+    @SuppressWarnings("unused")
+	private boolean onkonegatiivinen = false;
     int poistetut = 0;
 
  
@@ -428,6 +429,7 @@ public class laskinController {
   		sisalto.append(naytto.getText());
   		if(maara-1 - raja == 1 && sisalto.charAt(maara-1) == '-') {
   			sisalto.deleteCharAt(sisalto.length()-1);
+  			onkonegatiivinen = false;
   	  		poistetut++;
   	  		if(maara- poistetut == raja)laskutoimitus = true;
   	  		naytto.clear();
@@ -439,6 +441,28 @@ public class laskinController {
   		sisalto.deleteCharAt(sisalto.length()-1);
   		poistetut++;
   		naytto.clear();
+  		naytto.appendText(sisalto.toString());
+  	}
+  	
+  	
+  	
+  	public void lisaaPiste(){
+  		StringBuffer sisalto = new StringBuffer(naytto.getText());
+  		char[] merkki;
+  		if(laskutoimitus == true) {
+  			merkki = etsiMerkki().toCharArray();
+  		
+  		if(sisalto.charAt(sisalto.length()-1) == merkki[0] && laskutoimitus == true) {
+  			sisalto.append("0.");
+  			naytto.clear();
+  			poistetut = 0;
+  			naytto.appendText(sisalto.toString());
+  			return;
+  		} 
+  		}
+  		sisalto.append(".");
+  		naytto.clear();
+  		poistetut = 0;
   		naytto.appendText(sisalto.toString());
   	}
   	
