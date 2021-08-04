@@ -80,6 +80,7 @@ public class laskinController {
     private ArrayList <String> sisalto2 = new ArrayList<String>();
     private boolean laskutoimitus = false;
     private boolean desimaalitulos = false;
+    private boolean onkonegatiivinen = false;
     int poistetut = 0;
 
  
@@ -217,6 +218,7 @@ public class laskinController {
   		sisalto2.clear();
   		laskutoimitus = false;
   		desimaalitulos = false;
+  		onkonegatiivinen = false;
   		naytto.clear();
   		lisaaNayttoon(0);
   	}
@@ -369,13 +371,47 @@ public class laskinController {
   		lisaaNayttoon(tulos);
   	}
   	
+  	
   	public void vastaluku() {
   		if(naytto.getText().equals("0"))return;
+  		if(etsiMerkinPaikka() == 0) {
   		if(naytto.getText(0, 1).equals("-")) {
   			naytto.deleteText(0, 1);
   			return;
   		}
   		naytto.insertText(0, "-");
+  		}else {
+  			int i = etsiMerkinPaikka();
+  			StringBuffer sisalto = new StringBuffer(naytto.getText());
+  			String merkki = etsiMerkki();
+  	  	    
+  	  		switch(merkki) {
+  			case "+":
+  				sisalto.deleteCharAt(i);
+  				sisalto.insert(i, "-");
+  				naytto.clear();
+  				naytto.appendText(sisalto.toString());
+  				break;
+  			case "-":
+  				sisalto.deleteCharAt(i);
+  				sisalto.insert(i, "+");
+  				naytto.clear();
+  				naytto.appendText(sisalto.toString());
+  				break;
+  			case "x":
+  				sisalto.insert(i+1, "-");
+  				naytto.clear();
+  				naytto.appendText(sisalto.toString());
+  				onkonegatiivinen = true;
+  				break;
+  			case "/":
+  				sisalto.insert(i+1, "-");
+  				naytto.clear();
+  				naytto.appendText(sisalto.toString());
+  				onkonegatiivinen = true;
+  				break;
+  	  		}
+  		}
   	}
   	
   	
@@ -390,9 +426,18 @@ public class laskinController {
   		StringBuffer sisalto = new StringBuffer();
   		int raja = etsiMerkinPaikka();
   		sisalto.append(naytto.getText());
+  		if(maara-1 - raja == 1 && sisalto.charAt(maara-1) == '-') {
+  			sisalto.deleteCharAt(sisalto.length()-1);
+  	  		poistetut++;
+  	  		if(maara- poistetut == raja)laskutoimitus = true;
+  	  		naytto.clear();
+  	  		naytto.appendText(sisalto.toString());
+  	  		return;
+  		}
+  		char[] merkki = etsiMerkki().toCharArray();
+  		if(sisalto.charAt(maara-1) == merkki[0])laskutoimitus = false;
   		sisalto.deleteCharAt(sisalto.length()-1);
   		poistetut++;
-  		if(maara- poistetut == raja)laskutoimitus = false;
   		naytto.clear();
   		naytto.appendText(sisalto.toString());
   	}
