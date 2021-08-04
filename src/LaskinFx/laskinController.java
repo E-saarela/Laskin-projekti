@@ -167,14 +167,36 @@ public class laskinController {
     	}
 		return 0;
     }
+    
+    
+    public void suurenLuvunTarkistus(String sisalto) {
+    	String muunnos = sisalto;
+    	if(muunnos == null) {
+    		desimaalitulos = false;
+    		return;
+    	}
+	    String[] listattu = muunnos.split("");
+	    int index = indexOf(listattu);
+		for(int i = index+1; i < listattu.length;i++) {
+			if(listattu[i].equals("0")){
+				continue;
+			}else {
+				desimaalitulos = true;
+				return;
+			}
+		 }
+	   desimaalitulos = false;
+    }
    
 
   	public void lisaaNayttoon(double luku) {
     	StringBuilder vali = new StringBuilder();
 		double palautus = luku;
+		String tarkistus = String.format ("%.12f", palautus);
+		suurenLuvunTarkistus(tarkistus);
 		if(naytto.getText().length() == 1 && naytto.getText().equals("0"))naytto.clear();		
 		if(desimaalitulos == true) {
-			naytto.appendText(String.format ("%.12f", palautus));
+			naytto.appendText(String.format ("%.15f", palautus));
 		}else {
 			String muunnos = String.format ("%.1f", palautus); 
 	    	if(muunnos == null)return;
