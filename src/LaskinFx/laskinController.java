@@ -1,7 +1,5 @@
 package LaskinFx;
 
-import java.util.ArrayList;
-
 
 import fi.jyu.mit.ohj2.Mjonot;
 import javafx.event.ActionEvent;
@@ -75,9 +73,6 @@ public class laskinController {
 ///////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
     
-
-    private ArrayList <String> sisalto1 = new ArrayList<String>();
-    private ArrayList <String> sisalto2 = new ArrayList<String>();
     private boolean laskutoimitus = false;
     private boolean desimaalitulos = false;
     @SuppressWarnings("unused")
@@ -215,8 +210,6 @@ public class laskinController {
   	
   	
   	public void tyhjenna() {
-  		sisalto1.clear();
-  		sisalto2.clear();
   		laskutoimitus = false;
   		desimaalitulos = false;
   		onkonegatiivinen = false;
@@ -419,7 +412,6 @@ public class laskinController {
   	public void poista(){
   		int maara = naytto.getText().length();
   		if(naytto.getText().length() == 1) {
-  			sisalto1.clear(); 
   			naytto.clear();
   	  		naytto.appendText("0");
   	  		return;
