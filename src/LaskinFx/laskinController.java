@@ -83,11 +83,9 @@ public class laskinController {
   
     private void kasitteleNumerot(ActionEvent painettu) {
     	String s = painettu.toString();
-      	StringBuffer sb = new StringBuffer();
-      	sb.append(s);
-      	char c =',';
-      	String ss = Mjonot.erota(sb, c);
-      	char vali = ss.charAt(ss.length()-1);
+      	StringBuffer sb = new StringBuffer(s);
+      	String erotettu = Mjonot.erota(sb, ','); 
+      	char vali = erotettu.charAt(erotettu.length()-1);
       	String numero  = Character.toString(vali);
       	double luku = Double.parseDouble(numero);
       	String x = naytto.getText();
@@ -106,8 +104,8 @@ public class laskinController {
     }
     
     
-    public boolean onkoNayttoNolla() {
-    	String x = naytto.getText();                                        //tätä voidaan kysyä vain silloin kun tiedetään että näytössä on vain yksi luku
+    private boolean onkoNayttoNolla() {
+    	String x = naytto.getText();                          			//tätä voidaan kysyä vain silloin kun tiedetään että näytössä on vain yksi luku
       	if(x.charAt(0) == '0')return true;
       	return false;
     }
@@ -121,7 +119,7 @@ public class laskinController {
     }
     
     
-    public void onkoTasan(double luku) {
+    private void onkoTasan(double luku) {
     	String muunnos = Double.toString(luku);
     	if(muunnos == null) {
     		desimaalitulos = false;
@@ -140,7 +138,7 @@ public class laskinController {
 	   desimaalitulos = false;
     }
     
-    public String etsiMerkki() {
+    private String etsiMerkki() {
     	String s = naytto.getText();
     	StringBuffer sb = new StringBuffer();
     	sb.append(s);
@@ -153,7 +151,7 @@ public class laskinController {
     } 
     
     
-    public int etsiMerkinPaikka() {
+    private int etsiMerkinPaikka() {
     	String s = naytto.getText();
     	StringBuffer sb = new StringBuffer();
     	sb.append(s);
@@ -166,7 +164,7 @@ public class laskinController {
     }
     
     
-    public void suurenLuvunTarkistus(String sisalto) {
+    private void suurenLuvunTarkistus(String sisalto) {
     	String muunnos = sisalto;
     	if(muunnos == null) {
     		desimaalitulos = false;
@@ -186,7 +184,7 @@ public class laskinController {
     }
    
 
-  	public void lisaaNayttoon(double luku) {
+  	private void lisaaNayttoon(double luku) {
     	StringBuilder vali = new StringBuilder();
 		double palautus = luku;
 		String tarkistus = String.format ("%.12f", palautus);
@@ -209,7 +207,7 @@ public class laskinController {
 	}
   	
   	
-  	public void tyhjenna() {
+  	private void tyhjenna() {
   		laskutoimitus = false;
   		desimaalitulos = false;
   		onkonegatiivinen = false;
@@ -218,7 +216,7 @@ public class laskinController {
   	}
   
   
-  	public void lisaa() {
+  	private void lisaa() {
   		if(laskutoimitus == true) {
   		String s = naytto.getText();
   		String[] sisalto = s.split("");
@@ -252,7 +250,7 @@ public class laskinController {
   	}
   	
   	
-  	public void vahenna() {
+  	private void vahenna() {
   		if(laskutoimitus == true) {
   	  		String s = naytto.getText();
   	  		String[] sisalto = s.split("");
@@ -286,7 +284,7 @@ public class laskinController {
   	  	}
   	
   	
-  	public void kerro() {
+  	private void kerro() {
   		if(laskutoimitus == true) {
   	  		String s = naytto.getText();
   	  		String[] sisalto = s.split("");
@@ -320,7 +318,7 @@ public class laskinController {
   	}
   	
   	
-  	public void jaa() {
+  	private void jaa() {
   		if(laskutoimitus == true) {
   	  		String s = naytto.getText();
   	  		String[] sisalto = s.split("");
@@ -355,7 +353,7 @@ public class laskinController {
   	}
   	
   	
-  	public void toinenPotenssi() {
+  	private void toinenPotenssi() {
   		if(laskutoimitus == true)return;
   		String sisalto = naytto.getText();
   		double tulos = Double.parseDouble(sisalto)*Double.parseDouble(sisalto);
@@ -366,7 +364,7 @@ public class laskinController {
   	}
   	
   	
-  	public void vastaluku() {
+  	private void vastaluku() {
   		if(naytto.getText().equals("0"))return;
   		if(etsiMerkinPaikka() == 0) {
   		if(naytto.getText(0, 1).equals("-")) {
@@ -409,16 +407,15 @@ public class laskinController {
   	}
   	
   	
-  	public void poista(){
+  	private void poista(){
   		int maara = naytto.getText().length();
   		if(naytto.getText().length() == 1) {
   			naytto.clear();
   	  		naytto.appendText("0");
   	  		return;
   		}
-  		StringBuffer sisalto = new StringBuffer();
+  		StringBuffer sisalto = new StringBuffer(naytto.getText());
   		int raja = etsiMerkinPaikka();
-  		sisalto.append(naytto.getText());
   		if(maara-1 - raja == 1 && sisalto.charAt(maara-1) == '-') {
   			sisalto.deleteCharAt(sisalto.length()-1);
   			onkonegatiivinen = false;
@@ -445,7 +442,7 @@ public class laskinController {
   	
   	
   	
-  	public void lisaaPiste(){
+  	private void lisaaPiste(){
   		StringBuffer sisalto = new StringBuffer(naytto.getText());
   		char[] merkki;
   		if(laskutoimitus == true) {
@@ -466,7 +463,7 @@ public class laskinController {
   	}
   	
   	
-  	public void toteuta() {
+  	private void toteuta() {
   		String merkki = etsiMerkki();
   	    
   		switch(merkki) {
