@@ -81,6 +81,13 @@ public class laskinController {
 
  
   
+   /*
+   *@example
+   *<pre name="test">
+   * int i = 0;
+   * i === 0;
+   *</pre>
+   */
     private void kasitteleNumerot(ActionEvent painettu) {
     	String s = painettu.toString();
       	StringBuffer sb = new StringBuffer(s);
